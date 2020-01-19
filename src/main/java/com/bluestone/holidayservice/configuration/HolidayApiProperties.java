@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "holiday-service.holiday")
+@ConfigurationProperties(prefix = "holiday-service.holiday-api")
 @Getter
 @Setter
 public class HolidayApiProperties {

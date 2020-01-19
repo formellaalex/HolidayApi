@@ -3,7 +3,8 @@ package com.bluestone.holidayservice.model;
 public enum HolidaysApiQueryParams {
     KEY,
     COUNTRY,
-    YEAR;
+    YEAR,
+    PUBLIC;
 
     @Override
     public String toString() {

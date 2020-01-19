@@ -24,7 +24,7 @@ public class CommonHolidaysService {
     private HolidayApiProperties properties;
 
     @Inject
-    public CommonHolidaysService(RestTemplate holidaysApiRestTemplate, HolidayApiProperties properties) {
+    public CommonHolidaysService(final RestTemplate holidaysApiRestTemplate, final HolidayApiProperties properties) {
         this.holidaysApiRestTemplate = holidaysApiRestTemplate;
         this.properties = properties;
     }
@@ -82,6 +82,7 @@ public class CommonHolidaysService {
             .queryParam(HolidaysApiQueryParams.KEY.toString(), properties.getApiKey())
             .queryParam(HolidaysApiQueryParams.COUNTRY.toString(), countryCode)
             .queryParam(HolidaysApiQueryParams.YEAR.toString(), year)
+            .queryParam(HolidaysApiQueryParams.PUBLIC.toString(), true)
             .build();
         return holidaysApiRestTemplate.getForObject(
                 uriComponents.toUri(),

@@ -75,9 +75,7 @@ class CommonHolidaysServiceTest {
     ) {
         final HolidaysApiResponse holidaysApiResponse = new HolidaysApiResponse();
         holidaysApiResponse.setHolidays(
-            dates.stream().map(
-                    date -> createHoliday(countryCode, date)
-            ).collect(Collectors.toList())
+                dates.stream().map(date -> createHoliday(countryCode, date)).collect(Collectors.toList())
         );
         Mockito.when(
             restTemplate.getForObject(
@@ -87,6 +85,7 @@ class CommonHolidaysServiceTest {
                             .queryParam(HolidaysApiQueryParams.KEY.toString(), API_KEY)
                             .queryParam(HolidaysApiQueryParams.COUNTRY.toString(), countryCode)
                             .queryParam(HolidaysApiQueryParams.YEAR.toString(), dates.get(0).getYear())
+                            .queryParam(HolidaysApiQueryParams.PUBLIC.toString(), true)
                             .build().toUri()
                 ), Mockito.eq(HolidaysApiResponse.class)
             )
