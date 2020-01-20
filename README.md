@@ -1,6 +1,32 @@
 # Common holidays service
 
-This service allows for finding holidays that happens the same day in two provided countries.
+## Task content
+
+```
+Holiday Information Service
+Using any framework you are comfortable with in Java create a web service
+with holiday information.
+Use any available API of your choice to retrieve information about holidays.
+This service should accept two country codes and a date in a format YYYY-
+MM-DD and return next holiday after the given date that will happen on the
+same day in both countries.
+The response should be a JSON with date and names of the holidays in both
+countries. Example response:
+{
+date: “2016-03-27”,
+name1: ”Niedziela Wielkanocna”,
+name2: “Paske”
+}
+Only support country codes that are available in used API.
+If you have to make any assumptions about the behavior of the service, please
+describe them.
+The API key should be provided in your service and easy to configure. This
+code should be written in a maintainable way and as close to production ready
+code as possible.
+Provide all the source code, build script and instructions how to run your code.
+This task should not take you more than 4-5 hours to complete.
+```
+TL;DR: This service allows for finding holidays that happens the same day in two provided countries.
 
 ## Prerequisites
 
