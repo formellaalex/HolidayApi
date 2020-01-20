@@ -6,8 +6,13 @@ import com.bluestone.holidayservice.model.CommonHolidayResponse;
 import com.bluestone.holidayservice.model.HolidaysApiQueryParams;
 import com.bluestone.holidayservice.model.HolidaysApiResponse;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,12 +24,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class CommonHolidaysServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class CommonHolidaysServiceTest {
 
     private static final String API_URL = "http://www.holiday-api.com";
     private static final String API_KEY = "key";
     private static final String FIRST_COUNTRY_CODE = "PL";
     private static final String SECOND_COUNTRY_CODE = "DE";
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void getNextCommonHolidayCommon() {
@@ -39,7 +53,6 @@ class CommonHolidaysServiceTest {
                 LocalDate.parse("2019-01-14"), LocalDate.parse("2019-02-01"),
                 LocalDate.parse("2019-02-22"), commonDate
         );
-        final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
         mockRestTemplateForResponse(restTemplate, FIRST_COUNTRY_CODE, firstCountryHolidays);
         mockRestTemplateForResponse(restTemplate, SECOND_COUNTRY_CODE, secondCountryHolidays);
         final HolidayApiProperties properties = new HolidayApiProperties();
@@ -59,7 +72,6 @@ class CommonHolidaysServiceTest {
         final List<LocalDate> secondCountryHolidays = Lists.newArrayList(
                 LocalDate.parse("2019-01-14"), LocalDate.parse("2019-02-01"), LocalDate.parse("2019-02-22")
         );
-        final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
         mockRestTemplateForResponse(restTemplate, FIRST_COUNTRY_CODE, firstCountryHolidays);
         mockRestTemplateForResponse(restTemplate, SECOND_COUNTRY_CODE, secondCountryHolidays);
         final HolidayApiProperties properties = new HolidayApiProperties();

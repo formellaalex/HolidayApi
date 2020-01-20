@@ -8,6 +8,6 @@ public enum HolidaysApiQueryParams {
 
     @Override
     public String toString() {
-        return this.name().toLowerCase();
+        return name().toLowerCase();
     }
 }

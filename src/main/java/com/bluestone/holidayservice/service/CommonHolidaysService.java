@@ -32,8 +32,8 @@ public class CommonHolidaysService {
     public Optional<CommonHolidayResponse> getNextCommonHoliday(final CommonHolidayRequest request) {
         final int year = request.getDate().getYear();
         return calculateCommonHoliday(
-            getHolidaysForCountry(request.getFirstCountryCode(), year),
-            getHolidaysForCountry(request.getSecondCountryCode(), year),
+            getAllHolidaysForCountry(request.getFirstCountryCode(), year),
+            getAllHolidaysForCountry(request.getSecondCountryCode(), year),
             request.getDate()
         );
     }
@@ -43,28 +43,28 @@ public class CommonHolidaysService {
         final List<HolidaysApiResponse.Holiday> secondCountryHolidays,
         final LocalDate beginDate
     ) {
-        Optional<CommonHolidayResponse> result = Optional.empty();
-        int iter = seekToDateAfter(beginDate, firstCountryHolidays);
-        if (iter < 0) {
-            return result;
+        Optional<CommonHolidayResponse> commonHoliday = Optional.empty();
+        int currentDateFirstCountryPos = seekToDateAfter(beginDate, firstCountryHolidays);
+        if (currentDateFirstCountryPos < 0) {
+            return commonHoliday;
         }
-        int jter = 0;
-        while (iter < firstCountryHolidays.size() && jter < secondCountryHolidays.size()) {
-            final HolidaysApiResponse.Holiday firstHoliday = firstCountryHolidays.get(iter);
-            final HolidaysApiResponse.Holiday secondHoliday = secondCountryHolidays.get(jter);
+        int currentDateSecondCountryPos = 0;
+        while (currentDateFirstCountryPos < firstCountryHolidays.size() && currentDateSecondCountryPos < secondCountryHolidays.size()) {
+            final HolidaysApiResponse.Holiday firstHoliday = firstCountryHolidays.get(currentDateFirstCountryPos);
+            final HolidaysApiResponse.Holiday secondHoliday = secondCountryHolidays.get(currentDateSecondCountryPos);
             if (firstHoliday.getDate().compareTo(secondHoliday.getDate()) > 0) {
-                jter += 1;
+                currentDateSecondCountryPos += 1;
             }
             else if (firstHoliday.getDate().compareTo(secondHoliday.getDate()) < 0) {
-                iter += 1;
+                currentDateFirstCountryPos += 1;
             } else {
-                result = Optional.of(new CommonHolidayResponse(
+                commonHoliday = Optional.of(new CommonHolidayResponse(
                     LocalDate.parse(firstHoliday.getDate()), firstHoliday.getName(), secondHoliday.getName()
                 ));
                 break;
             }
         }
-        return result;
+        return commonHoliday;
     }
 
     private int seekToDateAfter(final LocalDate beginDate, final List<HolidaysApiResponse.Holiday> holidays) {
@@ -76,7 +76,7 @@ public class CommonHolidaysService {
         return -1;
     }
 
-    private List<HolidaysApiResponse.Holiday> getHolidaysForCountry(final String countryCode, final int year) {
+    private List<HolidaysApiResponse.Holiday> getAllHolidaysForCountry(final String countryCode, final int year) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .uri(URI.create(properties.getApiUrl()))
             .queryParam(HolidaysApiQueryParams.KEY.toString(), properties.getApiKey())
